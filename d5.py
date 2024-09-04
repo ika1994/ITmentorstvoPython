@@ -1,9 +1,4 @@
-for num in range(101):
-    if num==10:
-        continue
-    if num==44:
-        break
-    if num%2==0:
-        print(num)
-        
-            
+age=""
+while not age.isdigit() or int(age) <18:
+    age=input("Koliko godina imate?")
+print(f"Imete {age} godina")
