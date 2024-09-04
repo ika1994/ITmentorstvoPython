@@ -1,18 +1,31 @@
-students=[
-    {"name":"Toma","score":100, "active":True},
-    {"name":"Milos","score":35, "active":True},
-    {"name":"Alija", "score":82, "active":False}
-    ]
-for student in students:
-    if student["active"]:
-        if student["score"]>80:
-            student["grade"]="A"
-        elif 60<student["score"]<80:
-            student["grade"]="B"
-        elif 40<student["score"]<60:
-            student["grade"]="C"
-        elif 20<student["score"]<40:
-            student["grade"]="D"
-        else:
-            student["grade"]="F"
-        print(student)
+shops={
+    "maxi":{
+        "hleb":150,
+        "novine":30
+    },
+    "roda":{
+        "hleb":100,
+        "novine":30
+    },
+    "aman":{
+        "hleb":30,
+        "novine":30
+    },
+    "idea":{
+        "novine":20
+    }
+}
+avg=0.0
+sum=0
+i=0
+max=0
+max_price_shop=""
+for shop, items in shops.items():
+    if "hleb" in items:
+        if max<items["hleb"]:
+            max=items["hleb"]
+            max_price_shop=shop
+        sum+=items["hleb"]
+        i+=1
+avg=sum/i
+print(f"srednja vrednost hleba je {avg} i najskuplji hleb je u prodavnici {max_price_shop}")
