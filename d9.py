@@ -1,13 +1,25 @@
-def calculate_delivery(city):
-    if city=="beograd":
-        return 500
-    elif city=="zagreb":
-        return 600
-    elif city=="subotica":
-        return 1200
-    elif city=="kragujevac":
-        return 600
 
-city=input("unesite grad\n").lower()
-price=calculate_delivery(city)
-print(f"Dostava do {city} je {price}")
+books=[]
+
+def add_book(name, author):
+    books.append({"name":name, "author":author})
+
+add_book("hp1", "JJR")
+add_book("hp2", "jjr")
+add_book("lort", "idk")
+
+
+def delete_book(name):
+    book_to_delete=check_book(name)
+    if book_to_delete is None:
+        return "Knjiga ne postoji"
+    else:
+        books.remove(book_to_delete)
+        return "knjiga je obrisana"
+
+def check_book(name):
+    for book in books:
+        if book["name"]==name:
+          return book
+        
+print(delete_book("lort"))
