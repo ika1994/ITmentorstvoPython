@@ -50,11 +50,13 @@ while  action not in options:
         print(history)
 
     elif action=="najskuplji":
-        max=0
+        max_cena=0
         for product in products:
-            if int(products[product]["cena"])>max:
-                max=products[product]["cena"]
+            if int(products[product]["cena"])>max_cena:
+                max_cena=products[product]["cena"]
                 high_price_product=product
         print(high_price_product)
-
+        print("\n lambda print: ")
+        high_price_product = max(products, key=lambda x: products[x]["cena"])
+        print(high_price_product)
     action=None

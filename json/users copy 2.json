@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Toma",
+        "age": 31,
+        "height": 181,
+        "gender": "male"
+    },
+    {
+        "name": "Mika",
+        "age": 28,
+        "height": 170,
+        "gender": "male"
+    },
+    {
+        "name": "Ana",
+        "age": 20,
+        "height": 167,
+        "gender": "female"
+    },
+    {
+        "name": "Pera",
+        "age": 35,
+        "height": 160,
+        "gender": "male"
+    }
+]

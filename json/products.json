@@ -1,0 +1,27 @@
+[
+    {
+        "name":"hleb",
+        "price":100,
+        "quantity":120
+    },
+    {
+        "name":"kafa",
+        "price":150,
+        "quantity":20
+    },
+    {
+        "name":"mleko",
+        "price":200,
+        "quantity":150
+    },
+    {
+        "name":"voda",
+        "price":10,
+        "quantity":200
+    },
+    {
+        "name":"pivo",
+        "price":250,
+        "quantity":100
+    }
+]
