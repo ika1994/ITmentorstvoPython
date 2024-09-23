@@ -1,9 +1,15 @@
 import pymysql
 import re
 import bcrypt
-
 import pymysql.cursors
 
+
+#
+# DEBUG
+# 
+# regex
+# bcrypt
+# user registration
 
 HOST="localhost"
 USER="root"
@@ -11,7 +17,7 @@ PASSWORD=""
 DATABASE="project1"
 
 #REGEX#
-# dodati drugi uslov regex
+# dodati druge uslove regex
 email_pattert=r""
 name_pattern=r""
 password_pattern=r""
@@ -85,6 +91,7 @@ def main():
                 #upis u bazu
             elif action=='ne':
                 print("cao")
+                exit()
             else:
                 action=""
 
