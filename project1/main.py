@@ -51,8 +51,15 @@ def verify_password(conn, email, password):
         cursor.execute(query, (password, email))
         return cursor.fetchone()
 
+def hash_password(password):
+    hashed_password=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_password
+
+def check_password(user_password, hashed_password):
+    return bcrypt.checkpw(user_password.encode('utf-8'), hashed_password)
+
 def register_user(conn, email, password, name, last_name):
-    with conn.cursor() as cursor:
+    with conn.cursor() as cursor:password
         query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (email, password, first_name, last_name))
         conn.commit()
