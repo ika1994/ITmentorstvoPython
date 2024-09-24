@@ -7,7 +7,7 @@ import pymysql.cursors
 #
 # DEBUG
 # 
-# regex
+#
 # bcrypt
 # user registration
 
@@ -16,18 +16,12 @@ USER="root"
 PASSWORD=""
 DATABASE="project1"
 
-#REGEX#
-# dodati druge uslove regex
-email_pattert=r""
-name_pattern=r""
-password_pattern=r""
-
-
+name_pattern=r"^[a-zA-Z]+$"
+email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
 #create connection with sql
 def create_conn():
     return pymysql.connect(host=HOST,user=USER,password=PASSWORD, database=DATABASE,cursorclass=pymysql.cursors.DictCursor)
-
 
 def check_user_exist(conn, email):
     with conn.cursor() as cursor:
@@ -40,10 +34,10 @@ def login(conn, email):
         password = input("Unesite lozinku da biste se ulogovali\n")
         user = verify_password(conn, email, password)
         if user:
-            print(f"Uspešno ste se ulogovali: {user["first_name"]}")
+            print(f"Uspesno ste se ulogovali: {user["first_name"]}")
             return True
         else:
-            print("Greška: neispravna lozinka")
+            print("Greska: neispravna lozinka")
 
 def verify_password(conn, email, password):
     with conn.cursor() as cursor:
@@ -58,17 +52,26 @@ def hash_password(password):
 def check_password(user_password, hashed_password):
     return bcrypt.checkpw(user_password.encode('utf-8'), hashed_password)
 
-def register_user(conn, email, password, name, last_name):
-    with conn.cursor() as cursor:password
+def register_user(conn, email, password, first_name, last_name):
+    with conn.cursor() as cursor:
         query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (email, password, first_name, last_name))
         conn.commit()
 
 def verify_name(name):
-    False
+    if re.match(name_pattern,name):
+        name=name.lower().capitalize()
+        return name
+    else:
+        print("Neispravan podatak\n")
+        return False
 
 def verify_email(email):
-    None
+    if re.match(email_pattern,email):
+        return True
+    else:
+        print("Neispravan email")
+        return False
 
 def main():
     conn=create_conn()
@@ -78,10 +81,13 @@ def main():
     action=""
     first_name=""
     last_name=""
-
+    
     while email=="":
         email=input("Unesite email adresu\n")
-        user=check_user_exist(conn,email)
+        if not verify_email(email):
+            email=""
+        else:
+            user=check_user_exist(conn,email)
     if user:
         login(conn, email)
     if not user:
@@ -90,11 +96,16 @@ def main():
             if action=='da':
                 while first_name=="":
                     first_name=input("Unesite ime\n")
-                    verify_name(first_name)
+                    first_name=verify_name(first_name)
+                    if first_name==False:
+                        first_name=""
                 while last_name=="":
                     last_name=input("unesite prezime \n")
+                    last_name=verify_name(last_name)
+                    if last_name==False:
+                        last_name=""
                 while user_password=="" or len(user_password)<8 :
-                    user_password=input("unesite ispravan pass\n")
+                    user_password=input("unesite lozinku\n")
                 #upis u bazu
             elif action=='ne':
                 print("cao")
