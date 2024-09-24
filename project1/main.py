@@ -8,7 +8,7 @@ import pymysql.cursors
 # DEBUG
 # 
 #
-# bcrypt
+# 
 # user registration
 
 HOST="localhost"
@@ -32,17 +32,18 @@ def check_user_exist(conn, email):
 def login(conn, email):
     while True:
         password = input("Unesite lozinku da biste se ulogovali\n")
-        user = verify_password(conn, email, password)
-        if user:
+        user = return_user_data(conn, email)
+        print(user['password'])
+        if check_password(password,user['password'].encode('utf-8')):
             print(f"Uspesno ste se ulogovali: {user["first_name"]}")
             return True
         else:
             print("Greska: neispravna lozinka")
 
-def verify_password(conn, email, password):
+def return_user_data(conn, email):
     with conn.cursor() as cursor:
-        query = "SELECT * FROM users WHERE password=%s AND email=%s"
-        cursor.execute(query, (password, email))
+        query = "SELECT * FROM users WHERE email=%s"
+        cursor.execute(query, email)
         return cursor.fetchone()
 
 def hash_password(password):
@@ -55,8 +56,8 @@ def check_password(user_password, hashed_password):
 def register_user(conn, email, password, first_name, last_name):
     with conn.cursor() as cursor:
         query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (email, password, first_name, last_name))
-        conn.commit()
+        cursor.execute(query, (email, password.decode('utf-8'), first_name, last_name))
+        #conn.commit()
 
 def verify_name(name):
     if re.match(name_pattern,name):
@@ -81,7 +82,6 @@ def main():
     action=""
     first_name=""
     last_name=""
-    
     while email=="":
         email=input("Unesite email adresu\n")
         if not verify_email(email):
@@ -106,7 +106,10 @@ def main():
                         last_name=""
                 while user_password=="" or len(user_password)<8 :
                     user_password=input("unesite lozinku\n")
-                #upis u bazu
+                user_password=hash_password(user_password)
+                register_user(conn,email,user_password,first_name, last_name)
+                
+                
             elif action=='ne':
                 print("cao")
                 exit()
