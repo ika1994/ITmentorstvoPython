@@ -3,7 +3,6 @@ import re
 import bcrypt
 import pymysql.cursors
 
-### NE radi register user
 
 
 HOST="localhost"
@@ -66,6 +65,7 @@ def register_user(conn, email, password, first_name, last_name):
     with conn.cursor() as cursor:
         query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (email, password.decode('utf-8'), first_name, last_name))
+        conn.commit()
 
 def verify_name(name):
     if re.match(name_pattern,name):
@@ -104,30 +104,28 @@ def where(conn, table, column, value):
         query=f"SELECT * FROM {table} WHERE {column} = {value} LIMIT 1"
         if(cursor.execute(query)):
             return cursor.fetchall()
-        return False
+    return False
 
 ##FETCH Funkcija
+
 def fetch_all(results):
     for row in results:
         print(row)
 
-#def insert_password():
-#    user_password=""
-#   while user_password=="" or len(user_password)<8 :
-#        user_password=input("unesite lozinku\n")
-#    return hash_password(user_password)
+def insert_password():
+    user_password=""
+    while user_password=="" or len(user_password)<8 :
+        user_password=input("unesite lozinku\n")
+    return hash_password(user_password)
 
 def main():
     conn=create_conn()
     option= None
     email=""
-    user_password=""
     action=""
     first_name=""
     last_name=""
-    
-    #register_user(conn,"e@w.w","$2a$12$qGq5rBbQbXsk6oaI.HNRZOotrSXyCx.yziANqTS2nw95A2mxWGb9i","im","prez") 
-       
+           
     while email=="":
         email=input("Unesite email adresu\n")
         if not verify_email(email):
@@ -164,18 +162,14 @@ def main():
             if action==POSITIVE_ANSWER:
                 first_name=check_name(first_name, messages["first_name"]['question'])
                 last_name=check_name(last_name,messages["last_name"]["question"])
-                while user_password=="" or len(user_password)<8 :
-                    user_password=input("unesite lozinku\n")
-                user_password = hash_password(user_password)
-                
-                register_user(conn,email,user_password,first_name, last_name)
-                #register_user(conn,email,insert_password(),first_name, last_name)
+                register_user(conn,email,insert_password(),first_name, last_name)
                 
             elif action==NEGATIVE_ANSWER:
                 print("cao")
                 exit()
             else:
                 action=""
+    conn.close()
 
 if __name__ == "__main__":
     main()
