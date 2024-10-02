@@ -133,12 +133,8 @@ def main():
         else:
             user=check_user_exist(conn,email)
     if user:
-        #greska: ukoliko se ne unese pass pita dva puta login zbog duplog pozivanja funkcije
         while not(login(conn, email)):
-            print("greska lozinka")
-            #
-            login(conn, email)
-            #
+            print("gresna lozinka")
         while option not in options:
             option=input(f"Da li zelite sve da prikazete ili samo jednog korisnika {options}")
         if(option.lower() == options[0]):
