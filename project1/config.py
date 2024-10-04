@@ -1,0 +1,10 @@
+
+#DB
+HOST="localhost"
+USER="root"
+PASSWORD=""
+DATABASE="project1"
+
+#CONSTANCE
+POSITIVE_ANSWER="da"
+NEGATIVE_ANSWER="ne"
