@@ -4,6 +4,15 @@ import config
 
 def main():
     database.create_conn()
+    
+    
+    print("-------------------------\n\n\n")
+    shifts.create_shift_v2("2024-10-10", "08:00","8-24-8-48")
+    print("-------------------------\n\n\n")
+    
+    
+    
+    
     while True:
         user_id= input("unesite id radnika: ")
         shift_start= input("pocetak smene [HH:MM]: ")

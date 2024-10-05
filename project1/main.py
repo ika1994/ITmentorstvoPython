@@ -1,17 +1,16 @@
 import os
-
-import login
-import shift_menagment
-
+import importlib
 
 def list_files_in_directory(directory):
     subscripts=[]
-    subscripts_exceptions=['config.py', "database.py", "main.py", "project1.sql", "shifts.py", "__pycache__"]
+    subscripts_exception=['config.py', "database.py", "main.py", "project1.sql", "shifts.py", "__pycache__"]
+    
+    
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
-        if os.path.isfile(file_path) not in subscripts_exceptions:
-            if(filename not in subscripts_exceptions):
-                filename=filename.split('.')[0].replace('_', ' ')
+        if os.path.isfile(file_path) not in subscripts_exception:
+            if(filename not in subscripts_exception):
+                filename=filename.split('.')[0]
                 subscripts.append(filename)
     return subscripts     
             
@@ -24,22 +23,31 @@ def main():
         files=list_files_in_directory(current_directory)
         print("Izaberite skriptu koju zelite da pokrenete:")
         for i, ss in enumerate(files,start=1):
+            ss=ss.split('.')[0].replace("_", " ")
             print(f"{i}. {ss}")
         print(f"{len(files) + 1}. Izlaz")
         
         choice = input("Unesite broj opcije: ")
         
-
-        #treba automatizovati da sam broji koliko skripti ima da dinamicki ponudi koliko ima opcija korisnik
-        if choice == "1":
-            login.main()
-        elif choice == "2":
-            shift_menagment.main()
-        elif choice == "3":
+        try:
+            choice = int(choice)
+        except ValueError:
+            print("pogresan unos")
+            continue  # Restart the loop for a new input
+        
+        if choice == len(files) + 1:
             print("Izlaz iz programa.")
             break
-        else:
-            print("Nepoznata opcija, pokušajte ponovo.")
+        valid_choice=False
+        for i, ss in enumerate(files, start=1):
+            if choice ==i:
+                valid_choice=True
+                module = importlib.import_module(ss)
+                print(module)
+                module.main()
+                break
+        if not valid_choice:
+            print("Nepoznata komanda, pokusaj ponovo")
 
 if __name__ == "__main__":
     main()
