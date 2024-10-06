@@ -3,7 +3,7 @@ import pymysql.cursors
 import config
 
 conn = None
-def create_conn():
+def create_conn()->object:
     global conn
     if conn is None:
         try:
@@ -13,7 +13,7 @@ def create_conn():
             return None
     return conn
     
-def show(table,column,order,limit=None):
+def show(table:str, column:str, order:str, limit:int = None)->list|bool:
     with conn.cursor() as cursor:
         query=f"SELECT * FROM {table} ORDER BY {column} {order}"
         if limit:
@@ -25,14 +25,14 @@ def show(table,column,order,limit=None):
                 return cursor.fetchall()
     return False
         
-def where(table, column, value):
+def where(table:str, column:str, value:str)->list|bool:
     with conn.cursor() as cursor:
         query=f"SELECT * FROM {table} WHERE {column} = %s LIMIT 1"
         if(cursor.execute(query, value)):
             return cursor.fetchall()
     return False
 
-def insert(table, columns, values):
+def insert(table:str, columns:list[str], values:list[str])->bool:
     with conn.cursor() as cursor:
         columns_str=", ".join(columns)
         values_str=", ".join(["%s"]*len(values))
@@ -42,7 +42,7 @@ def insert(table, columns, values):
         return True
     return False
 
-def update(table, columns, values, where_col, where_val):
+def update(table:str, columns:list[str], values:list[str], where_col:str, where_val:str)->bool:
     with conn.cursor() as cursor:
         update_query=", ".join([f"{col} = %s" for col in columns])
         query=f"UPDATE {table} SET {update_query} WHERE {where_col} = %s"
@@ -51,7 +51,7 @@ def update(table, columns, values, where_col, where_val):
         return True
     return False
 
-def delete(table, id):
+def delete(table:str, id:int)->bool:
     with conn.cursor() as cursor:
         query = f"DELETE FROM {table} WHERE id = %s"
         if(cursor.execute(query, id)):
@@ -59,6 +59,6 @@ def delete(table, id):
             return True
         return False
 
-def fetch_all(results):
+def fetch_all(results:list[str]):
     for row in results:
         print(row)

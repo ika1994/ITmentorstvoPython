@@ -18,12 +18,11 @@ def list_files_in_directory(directory):
 
 def main():
     while True:
-        i=1
         current_directory = os.getcwd()
         files=list_files_in_directory(current_directory)
         print("Izaberite skriptu koju zelite da pokrenete:")
         for i, ss in enumerate(files,start=1):
-            ss=ss.split('.')[0].replace("_", " ")
+            ss=ss.replace("_", " ")
             print(f"{i}. {ss}")
         print(f"{len(files) + 1}. Izlaz")
         
@@ -33,7 +32,7 @@ def main():
             choice = int(choice)
         except ValueError:
             print("pogresan unos")
-            continue  # Restart the loop for a new input
+            continue
         
         if choice == len(files) + 1:
             print("Izlaz iz programa.")
